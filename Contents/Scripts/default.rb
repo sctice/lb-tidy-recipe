@@ -21,7 +21,6 @@ end
 def convert_special_chars(line)
   line
     .gsub(/^\s*[-*•+]\s*/, '')
-    .gsub(/^#*\s*(ingredients|directions):?$/i, '')
     .gsub(/\b1\/2/, '½')
     .gsub(/\b1\/3/, '⅓')
     .gsub(/\b1\/4/, '¼')
@@ -39,7 +38,6 @@ def convert_special_chars(line)
     .gsub(/(\d+)° (F|C)\b/i, '\1°\2')
     .gsub(/°(?!C|F)/, '°F')
     .gsub(/(\d+)°F(?! \(\d+°C)/) { |m| "#{m} (#{f_to_c($1)}°C)" }
-    .gsub(/^From\s+(?=http)/, '')
 end
 
 def f_to_c(n)
