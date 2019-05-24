@@ -5,11 +5,9 @@ require 'json'
 def main
   path_or_str = ARGV[0]
   text = read_optional_path(path_or_str)
-  tidied = text.lines.map(&method(:convert_special_chars)).join
-  spaced = tidied
-    .gsub(/\n{3,}/, "\n\n")
-    .gsub(/(^[A-Z][^\n]+(\n|$)){3,}/m) {|m| m.split(/\n/).join("\n\n")}
-  item = { "title" => spaced }
+  tidied_text = text.lines.map(&method(:convert_special_chars)).join
+  out = tidy_paragraphs(tidied_text)
+  item = { "title" => out }
   puts item.to_json
 end
 
@@ -42,6 +40,12 @@ end
 
 def f_to_c(n)
   (((n.to_f - 32) * 5) / 9).floor
+end
+
+def tidy_paragraphs(text)
+  text
+    .gsub(/\n{3,}/, "\n\n")
+    .gsub(/(^[A-Z][^\n]+(\n|$)){3,}/m) { |m| m.split(/\n/).join("\n\n") }
 end
 
 main
